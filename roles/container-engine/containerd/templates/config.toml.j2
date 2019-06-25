@@ -5,8 +5,9 @@ disabled_plugins = ["restart"]
   level = "info"
 
 [plugins.linux]
-  shim = "/usr/bin/containerd-shim"
-  runtime = "/usr/sbin/runc"
+  # This forces gvisor for all containers:
+  # runtime = "/usr/sbin/runsc"
+  shim = "/root/bin/gvisor-containerd-shim"
 
 [plugins.cri]
   stream_server_address = "127.0.0.1"
@@ -15,7 +16,7 @@ disabled_plugins = ["restart"]
   bin_dir = "/opt/cni/bin"
   conf_dir = "/etc/cni/net.d"
   conf_template = ""
-[plugins.cri.containerd.untrusted_workload_runtime]
-  runtime_type = ""
-  runtime_engine = ""
-  runtime_root = ""
+[plugins.cri.containerd.runtimes.runsc]
+  runtime_type = "io.containerd.runtime.v1.linux"
+  runtime_engine = "/root/bin/runsc"
+  runtime_root = "/run/containerd/runsc"
