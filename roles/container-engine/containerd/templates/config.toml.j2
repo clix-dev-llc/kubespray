@@ -12,8 +12,12 @@ disabled_plugins = ["restart"]
 {% endif %}
 
 [plugins.linux]
+{% if containerd_gvisor is defined %}
+  shim = "/root/bin/gvisor-containerd-shim"
+{% else %}
   shim = "/usr/bin/containerd-shim"
   runtime = "/usr/sbin/runc"
+{% endif %}
 
 [plugins.cri]
   stream_server_address = "127.0.0.1"
@@ -25,10 +29,17 @@ disabled_plugins = ["restart"]
   conf_dir = "/etc/cni/net.d"
   conf_template = ""
 
+{% if containerd_gvisor is defined %}
+[plugins.cri.containerd.runtimes.runsc]
+  runtime_type = "io.containerd.runtime.v1.linux"
+  runtime_engine = "/root/bin/runsc"
+  runtime_root = "/run/containerd/runsc"
+{% else %}
 [plugins.cri.containerd.untrusted_workload_runtime]
   runtime_type = ""
   runtime_engine = ""
   runtime_root = ""
+{% endif %}
 
 {% if 'registries' in containerd_config %}
 [plugins.cri.registry]
