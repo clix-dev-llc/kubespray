@@ -30,6 +30,9 @@ disabled_plugins = ["restart"]
   conf_template = ""
 
 {% if containerd_gvisor is defined %}
+[plugins.cri.containerd]
+snapshotter = "overlayfs"
+
 [plugins.cri.containerd.runtimes.runsc]
   runtime_type = "io.containerd.runtime.v1.linux"
   runtime_engine = "/root/bin/runsc"
