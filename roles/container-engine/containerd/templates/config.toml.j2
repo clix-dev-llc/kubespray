@@ -16,7 +16,7 @@ disabled_plugins = ["restart"]
   shim = "/root/bin/gvisor-containerd-shim"
 {% else %}
   shim = "/usr/bin/containerd-shim"
-  runtime = "/usr/sbin/runc"
+  runtime = "{{ runc_binary }}"
 {% endif %}
 
 [plugins.cri]
