@@ -35,7 +35,7 @@ snapshotter = "overlayfs"
 
 [plugins.cri.containerd.runtimes.runsc]
   runtime_type = "io.containerd.runtime.v1.linux"
-  runtime_engine = "/root/bin/runsc"
+  runtime_engine = "{{ containerd_runtime_engine_path }}"
   runtime_root = "/run/containerd/runsc"
 {% endif %}
 

@@ -18,7 +18,7 @@ containerd_cfg_dir: /etc/containerd
 
 # Path to runc binray
 runc_binary: /usr/sbin/runc
-
+containerd_runtime_engine_path: /root/bin/runsc
 
 yum_repo_dir: /etc/yum.repos.d
 yum_conf: /etc/yum.conf
