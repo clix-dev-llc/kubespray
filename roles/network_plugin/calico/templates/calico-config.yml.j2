@@ -25,4 +25,3 @@ data:
 {% if inventory_hostname in groups['k8s-cluster'] and peer_with_router|default(false) %}
   as: "{{ local_as|default(global_as_num) }}"
 {% endif -%}
-  veth_mtu: "1430"
