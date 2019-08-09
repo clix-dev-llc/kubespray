@@ -109,7 +109,7 @@ Supported Components
 --------------------
 
 -   Core
-    -   [kubernetes](https://github.com/kubernetes/kubernetes) v1.15.1
+    -   [kubernetes](https://github.com/kubernetes/kubernetes) v1.15.2
     -   [etcd](https://github.com/coreos/etcd) v3.3.10
     -   [docker](https://www.docker.com/) v18.06 (see note)
     -   [cri-o](http://cri-o.io/) v1.11.5 (experimental: see [CRI-O Note](docs/cri-o.md). Only on centos based OS)
@@ -117,7 +117,7 @@ Supported Components
     -   [cni-plugins](https://github.com/containernetworking/plugins) v0.8.1
     -   [calico](https://github.com/projectcalico/calico) v3.7.3
     -   [canal](https://github.com/projectcalico/canal) (given calico/flannel versions)
-    -   [cilium](https://github.com/cilium/cilium) v1.3.0
+    -   [cilium](https://github.com/cilium/cilium) v1.5.5
     -   [contiv](https://github.com/contiv/install) v1.2.1
     -   [flanneld](https://github.com/coreos/flannel) v0.11.0
     -   [kube-router](https://github.com/cloudnativelabs/kube-router) v0.2.5
@@ -134,7 +134,7 @@ Note: The list of validated [docker versions](https://github.com/kubernetes/kube
 
 Requirements
 ------------
--   **Minimum required version of Kubernetes is v1.13**
+-   **Minimum required version of Kubernetes is v1.14**
 -   **Ansible v2.7.8 (or newer, but [not 2.8.x](https://github.com/kubernetes-sigs/kubespray/issues/4778)) and python-netaddr is installed on the machine
     that will run Ansible commands**
 -   **Jinja 2.9 (or newer) is required to run the Ansible Playbooks**
