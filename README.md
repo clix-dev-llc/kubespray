@@ -126,7 +126,7 @@ Supported Components
 -   Application
     -   [cephfs-provisioner](https://github.com/kubernetes-incubator/external-storage) v2.1.0-k8s1.11
     -   [rbd-provisioner](https://github.com/kubernetes-incubator/external-storage) v2.1.1-k8s1.11
-    -   [cert-manager](https://github.com/jetstack/cert-manager) v0.5.2
+    -   [cert-manager](https://github.com/jetstack/cert-manager) v0.11.0
     -   [coredns](https://github.com/coredns/coredns) v1.6.0
     -   [ingress-nginx](https://github.com/kubernetes/ingress-nginx) v0.25.1
 
@@ -134,7 +134,7 @@ Note: The list of validated [docker versions](https://github.com/kubernetes/kube
 
 Requirements
 ------------
--   **Minimum required version of Kubernetes is v1.14**
+-   **Minimum required version of Kubernetes is v1.15**
 -   **Ansible v2.7.8 (or newer, but [not 2.8.x](https://github.com/kubernetes-sigs/kubespray/issues/4778)) and python-netaddr is installed on the machine
     that will run Ansible commands**
 -   **Jinja 2.9 (or newer) is required to run the Ansible Playbooks**
