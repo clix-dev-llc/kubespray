@@ -39,6 +39,11 @@ snapshotter = "overlayfs"
   runtime_root = "/run/containerd/runsc"
 {% endif %}
 
+[plugins.cri.containerd.runtimes.runc]
+  runtime_type = "io.containerd.runtime.v1.linux"
+  runtime_engine = "/usr/sbin/runc"
+  runtime_root = "/run/containerd/runc"
+
 {% if containerd_kata is defined %}
 [plugins.cri.containerd.runtimes.kata]
   runtime_type = "io.containerd.kata.v2"

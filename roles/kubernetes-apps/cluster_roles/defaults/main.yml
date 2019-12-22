@@ -1,1 +1,2 @@
 ---
+podsecuritypolicy_restricted_defaults_enabled: true
