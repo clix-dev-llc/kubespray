@@ -263,6 +263,7 @@ calicoctl_binary_checksums:
     v3.5.4: 197194b838cc2a9a7455c2ebd5505a5e24f8f3d994eb75c17f5dd568944100b8
     v3.4.4: 93bd084e053cf1bf3b7fef369677bd6767c30fe7135e2c7e044e31693422ef61
     v3.7.3: 932f68e893e80e95e10f064f1e7745e438d456f41a6ff12d11bb16ca0cab735c
+    v3.7.5: e40a4fcda834eb0d2fe932c716403eef5761a521e3aef8e6ea25dd737d56242d
   arm64:
     v3.6.1: 60fbaeb257061647bdf12b5ede7a0d4298a5ee216f6472e5a92bb14ef5c2a5d3
     v3.5.4: a4481178665658658a73e4ceca9a1dff5cccded4179615c91d1c3e49fd96f237
@@ -428,8 +429,8 @@ downloads:
     repo: "{{ etcd_image_repo }}"
     tag: "{{ etcd_image_tag }}"
     sha256: >-
-     {{ etcd_binary_checksum if (etcd_deployment_type == 'host' or etcd_kubeadm_enabled)
-     else etcd_digest_checksum|d(None) }}
+      {{ etcd_binary_checksum if (etcd_deployment_type == 'host' or etcd_kubeadm_enabled)
+      else etcd_digest_checksum|d(None) }}
     url: "{{ etcd_download_url }}"
     unarchive: true
     owner: "root"

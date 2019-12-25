@@ -16,7 +16,7 @@ kube_resolv_conf: "/etc/resolv.conf"
 kubelet_enable_cri: true
 kubelet_cgroups_per_qos: true
 # Set to empty to avoid cgroup creation
-kubelet_enforce_node_allocatable: "\"\""
+kubelet_enforce_node_allocatable: '""'
 
 # Set runtime cgroups
 kubelet_runtime_cgroups: "/systemd/system.slice"
@@ -67,6 +67,9 @@ kubelet_load_modules: false
 # Configure the amount of pods able to run on single node
 # default is equal to application default
 kubelet_max_pods: 110
+
+# Max number of PIDs to allow per container
+kubelet_pod_pid_limit: 50
 
 ## Support custom flags to be passed to kubelet
 kubelet_custom_flags: []
