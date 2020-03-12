@@ -65,6 +65,11 @@
     - ansible_os_family in ['Ubuntu', 'Debian']
     - not is_atomic
 
+- name: Install pigz for image extraction in containerd
+  package:
+    name: "pigz"
+    state: present
+
 - name: ensure containerd packages are installed
   action: "{{ containerd_package_info.pkg_mgr }}"
   args:
