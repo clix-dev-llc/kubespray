@@ -71,6 +71,12 @@ kubelet_max_pods: 110
 # Max number of PIDs to allow per container
 kubelet_pod_pid_limit: 50
 
+## Support parameters to be passed to kubelet via kubelet-config.yaml
+kubelet_config_extra_args: {}
+
+## Support parameters to be passed to kubelet via kubelet-config.yaml only on nodes, not masters
+kubelet_node_config_extra_args: {}
+
 ## Support custom flags to be passed to kubelet
 kubelet_custom_flags: []
 

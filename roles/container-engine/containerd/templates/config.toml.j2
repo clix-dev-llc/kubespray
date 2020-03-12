@@ -32,6 +32,11 @@ disabled_plugins = ["restart"]
 {% if containerd_gvisor is defined %}
 [plugins.cri.containerd]
 snapshotter = "overlayfs"
+{% if 'containerd' in containerd_config %}
+{% for param, value in containerd_config.containerd.items() %}
+  {{ param }} = {{ value }}
+{% endfor %}
+{% endif %}
 
 [plugins.cri.containerd.runtimes.runsc]
   runtime_type = "io.containerd.runtime.v1.linux"
@@ -51,6 +56,11 @@ snapshotter = "overlayfs"
     ConfigPath = "/etc/kata-containers/config.toml"
 {% endif %}
 
+[plugins.cri.containerd.untrusted_workload_runtime]
+  runtime_type = "io.containerd.runtime.v1.linux"
+  runtime_engine = "{{ containerd_runtime_engine_path }}"
+  runtime_root = "/run/containerd/runsc"
+
 {% if 'registries' in containerd_config %}
 [plugins.cri.registry]
 [plugins.cri.registry.mirrors]
@@ -58,4 +68,10 @@ snapshotter = "overlayfs"
 [plugins.cri.registry.mirrors."{{ registry }}"]
   endpoint = ["{{ addr }}"]
 {% endfor %}
+{% endif %}
+
+{% if 'metrics' in containerd_config %}
+[metrics]
+  address = "{{ containerd_config.metrics.address | default('') }}"
+  grpc_histogram = {{ containerd_config.metrics.grpc_histogram | default(false) | lower }}
 {% endif %}

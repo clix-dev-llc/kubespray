@@ -1,4 +1,14 @@
 ---
+- name: kubeadm | Check api is up
+  uri:
+    url: "https://{{ ip | default(fallback_ips[inventory_hostname]) }}:6443/healthz"
+    validate_certs: false
+  when: inventory_hostname == groups['kube-master']|first
+  register: _result
+  retries: 60
+  delay: 5
+  until: _result.status == 200
+
 - name: kubeadm | Upgrade first master
   command: >-
     timeout -k 600s 600s
@@ -9,6 +19,7 @@
     --allow-experimental-upgrades
     --allow-release-candidate-upgrades
     --etcd-upgrade=false
+    {{ (kubeadm_output.stdout is version('v1.16.0', '>=')) | ternary('--certificate-renewal=true', '') }}
     --force
   register: kubeadm_upgrade
   # Retry is because upload config sometimes fails
@@ -29,6 +40,7 @@
     --allow-experimental-upgrades
     --allow-release-candidate-upgrades
     --etcd-upgrade=false
+    {{ (kubeadm_output.stdout is version('v1.16.0', '>=')) | ternary('--certificate-renewal=true', '') }}
     --force
   register: kubeadm_upgrade
   when: inventory_hostname != groups['kube-master']|first

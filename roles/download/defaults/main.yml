@@ -51,7 +51,7 @@ image_arch: "{{host_architecture | default('amd64')}}"
 # Versions
 kube_version: v1.16.6
 kubeadm_version: "{{ kube_version }}"
-etcd_version: v3.3.10
+etcd_version: v3.3.12
 
 # gcr and kubernetes image repo define
 gcr_image_repo: "gcr.io"
@@ -80,7 +80,7 @@ cni_version: "v0.8.3"
 weave_version: 2.5.2
 pod_infra_version: 3.1
 contiv_version: 1.2.1
-cilium_version: "v1.5.5"
+cilium_version: "v1.7.1"
 kube_ovn_version: "v0.6.0"
 kube_router_version: "v0.2.5"
 multus_version: "v3.2.1"
@@ -88,7 +88,7 @@ multus_version: "v3.2.1"
 # Get kubernetes major version (i.e. 1.15.4 => 1.15)
 kube_major_version: "{{ kube_version | regex_replace('^v([0-9])+\\.([0-9]+)\\.[0-9]+', 'v\\1.\\2') }}"
 crictl_supported_versions:
-  v1.17: "v1.16.1"
+  v1.17: "v1.17.0"
   v1.16: "v1.16.1"
   v1.15: "v1.15.0"
 crictl_version: "{{ crictl_supported_versions[kube_major_version] }}"
@@ -104,14 +104,17 @@ crictl_download_url: "https://github.com/kubernetes-sigs/cri-tools/releases/down
 
 crictl_checksums:
   arm:
+    v1.17.0: 9700957218e8e7bdc02cbc8fda4c189f5b6223a93ba89d876bdfd77b6117e9b7
     v1.16.1: 367826f3eb06c4d923f3174d23141ddacef9ffcb0c902502bd922dbad86d08dd
     v1.16.0: 331c49bd9196009b8230f7a36ec272924a7bcf4c1614ecddf0eb9598c787da0e
     v1.15.0: f31f8c3b4791608a48d030d1aa1a694a73849ae057b23a90ce4ef17e5afde9e8
   arm64:
+    v1.17.0: d89afd89c2852509fafeaff6534d456272360fcee732a8d0cb89476377387e12
     v1.16.1: 62b60ab7046b788df892a1b746bd602c520a59c38232febc0580692c9805f641
     v1.16.0: aa118c31d6f6fd2d24bb2de4a33598a14a5952e1d01f93d5c3267c2b5334743b
     v1.15.0: 785c3da7e058f6fd00b0a48de24b9199eb6bae940d13f509c44ea6dd7ad9ffcd
   amd64:
+    v1.17.0: 7b72073797f638f099ed19550d52e9b9067672523fc51b746e65d7aa0bafa414
     v1.16.1: 19fed421710fccfe58f5573383bb137c19438a9056355556f1a15da8d23b3ad1
     v1.16.0: a3eefa10a483c643ad85aee3d7832a720976ef7e80dde46b212eaaacd7d09512
     v1.15.0: c3b71be1f363e16078b51334967348aab4f72f46ef64a61fe7754e029779d45a
@@ -307,8 +310,8 @@ etcd_binary_checksums:
   # Etcd does not have arm32 builds at the moment, having some dummy value is
   # required to avoid "no attribute" error
   arm: 0
-  arm64: 5ec97b0b872adce275b8130d19db314f7f2b803aeb24c4aae17a19e2d66853c4
-  amd64: 1620a59150ec0a0124a65540e23891243feb2d9a628092fb1edcc23974724a45
+  arm64: 170b848ac1a071fe7d495d404a868a2c0090750b2944f8a260ef1c6125b2b4f4
+  amd64: dc5d82df095dae0a2970e4d870b6929590689dd707ae3d33e7b86da0f7f211b6
 cni_binary_checksums:
   arm: 6094887394e0f10cfb538a0a052bc94a89a88b77af2e438b66e2c0bee26b52ee
   arm64: aa931e78f08f00edd01f8b5ea2c9402cbf3877d91f9fbe9c132c05430cc7a493
@@ -428,7 +431,7 @@ test_image_repo: "{{ docker_image_repo }}/library/busybox"
 test_image_tag: latest
 busybox_image_repo: "{{ docker_image_repo }}/library/busybox"
 busybox_image_tag: 1.29.2
-helm_version: "v2.16.1"
+helm_version: "v3.1.0"
 helm_image_repo: "{{ docker_image_repo }}/lachlanevenson/k8s-helm"
 helm_image_tag: "{{ helm_version }}"
 tiller_image_repo: "{{ gcr_image_repo }}/kubernetes-helm/tiller"
@@ -450,7 +453,7 @@ rbd_provisioner_image_tag: "v2.1.1-k8s1.11"
 local_path_provisioner_image_repo: "{{ docker_image_repo }}/rancher/local-path-provisioner"
 local_path_provisioner_image_tag: "v0.0.2"
 ingress_nginx_controller_image_repo: "{{ quay_image_repo }}/kubernetes-ingress-controller/nginx-ingress-controller"
-ingress_nginx_controller_image_tag: "0.26.1"
+ingress_nginx_controller_image_tag: "0.28.0"
 cert_manager_version: "v0.11.0"
 cert_manager_controller_image_repo: "{{ quay_image_repo }}/jetstack/cert-manager-controller"
 cert_manager_controller_image_tag: "{{ cert_manager_version }}"
@@ -458,11 +461,30 @@ addon_resizer_version: "1.8.3"
 addon_resizer_image_repo: "{{ kube_image_repo }}/addon-resizer"
 addon_resizer_image_tag: "{{ addon_resizer_version }}"
 
+cinder_csi_attacher_image_repo: "{{ quay_image_repo }}/k8scsi/csi-attacher"
+cinder_csi_attacher_image_tag: "v1.2.1"
+cinder_csi_provisioner_image_repo: "{{ quay_image_repo }}/k8scsi/csi-provisioner"
+cinder_csi_provisioner_image_tag: "v1.3.0"
+cinder_csi_snapshotter_image_repo: "{{ quay_image_repo }}/k8scsi/csi-snapshotter"
+cinder_csi_snapshotter_image_tag: "v1.2.0"
+cinder_csi_resizer_image_repo: "{{ quay_image_repo }}/k8scsi/csi-resizer"
+cinder_csi_resizer_image_tag: "v0.2.0"
+cinder_csi_plugin_image_repo: "{{ docker_image_repo }}/k8scloudprovider/cinder-csi-plugin"
+cinder_csi_plugin_image_tag: "latest"
+cinder_csi_node_driver_registrar_image_repo: "{{ quay_image_repo }}/k8scsi/csi-node-driver-registrar"
+cinder_csi_node_driver_registrar_image_tag: "v1.1.0"
+
 dashboard_image_repo: "{{ gcr_image_repo }}/google_containers/kubernetes-dashboard-{{ image_arch }}"
 dashboard_image_tag: "v1.10.1"
 
 image_pull_command: "{{ docker_bin_dir }}/docker pull"
-image_info_command: "{{ docker_bin_dir }}/docker images -q | xargs {{ docker_bin_dir }}/docker inspect -f \"{{ '{{' }} if .RepoTags {{ '}}' }}{{ '{{' }} (index .RepoTags 0) {{ '}}' }}{{ '{{' }} end {{ '}}' }}{{ '{{' }} if .RepoDigests {{ '}}' }},{{ '{{' }} (index .RepoDigests 0) {{ '}}' }}{{ '{{' }} end {{ '}}' }}\" | tr '\n' ','"
+image_save_command: "{{ docker_bin_dir }}/docker save {{ image_reponame }} | gzip -{{ download_compress }} > {{ image_path_final }}"
+image_load_command: "{{ docker_bin_dir }}/docker load < {{ image_path_final }}"
+image_info_command: "{{ docker_bin_dir }}/docker images -q | xargs {{ docker_bin_dir }}/docker inspect -f \"{{ '{{' }} if .RepoTags {{ '}}' }}{{ '{{' }} (join .RepoTags \\\",\\\") {{ '}}' }}{{ '{{' }} end {{ '}}' }}{{ '{{' }} if .RepoDigests {{ '}}' }},{{ '{{' }} (join .RepoDigests \\\",\\\") {{ '}}' }}{{ '{{' }} end {{ '}}' }}\" | tr '\n' ','"
+
+image_pull_command_on_localhost: "{{ docker_bin_dir }}/docker pull"
+image_save_command_on_localhost: "{{ docker_bin_dir }}/docker save {{ image_reponame }} | gzip -{{ download_compress }} > {{ image_path_cached }}"
+image_info_command_on_localhost: "{{ docker_bin_dir }}/docker images"
 
 downloads:
   netcheck_server:
@@ -769,7 +791,7 @@ downloads:
       - k8s-cluster
 
   install_socat:
-    enabled: "{{ ansible_os_family in ['CoreOS', 'Container Linux by CoreOS'] }}"
+    enabled: "{{ ansible_os_family in ['CoreOS', 'Container Linux by CoreOS', 'Flatcar', 'Flatcar Container Linux by Kinvolk'] }}"
     container: true
     repo: "{{ install_socat_image_repo }}"
     tag: "{{ install_socat_image_tag }}"
@@ -944,6 +966,60 @@ downloads:
     repo: "{{ cert_manager_controller_image_repo }}"
     tag: "{{ cert_manager_controller_image_tag }}"
     sha256: "{{ cert_manager_controller_digest_checksum|default(None) }}"
+    groups:
+      - kube-node
+
+  cinder_csi_attacher:
+    enabled: "{{ cinder_csi_enabled }}"
+    container: true
+    repo: "{{ cinder_csi_attacher_image_repo }}"
+    tag: "{{ cinder_csi_attacher_image_tag }}"
+    sha256: "{{ cinder_csi_attacher_digest_checksum|default(None) }}"
+    groups:
+      - kube-node
+
+  cinder_csi_provisioner:
+    enabled: "{{ cinder_csi_enabled }}"
+    container: true
+    repo: "{{ cinder_csi_provisioner_image_repo }}"
+    tag: "{{ cinder_csi_provisioner_image_tag }}"
+    sha256: "{{ cinder_csi_provisioner_digest_checksum|default(None) }}"
+    groups:
+      - kube-node
+
+  cinder_csi_snapshotter:
+    enabled: "{{ cinder_csi_enabled }}"
+    container: true
+    repo: "{{ cinder_csi_snapshotter_image_repo }}"
+    tag: "{{ cinder_csi_snapshotter_image_tag }}"
+    sha256: "{{ cinder_csi_snapshotter_digest_checksum|default(None) }}"
+    groups:
+      - kube-node
+
+  cinder_csi_resizer:
+    enabled: "{{ cinder_csi_enabled }}"
+    container: true
+    repo: "{{ cinder_csi_resizer_image_repo }}"
+    tag: "{{ cinder_csi_resizer_image_tag }}"
+    sha256: "{{ cinder_csi_resizer_digest_checksum|default(None) }}"
+    groups:
+      - kube-node
+
+  cinder_csi_plugin:
+    enabled: "{{ cinder_csi_enabled }}"
+    container: true
+    repo: "{{ cinder_csi_plugin_image_repo }}"
+    tag: "{{ cinder_csi_plugin_image_tag }}"
+    sha256: "{{ cinder_csi_plugin_digest_checksum|default(None) }}"
+    groups:
+      - kube-node
+
+  cinder_csi_node_driver_registrar:
+    enabled: "{{ cinder_csi_enabled }}"
+    container: true
+    repo: "{{ cinder_csi_node_driver_registrar_image_repo }}"
+    tag: "{{ cinder_csi_node_driver_registrar_image_tag }}"
+    sha256: "{{ cinder_csi_node_driver_registrar_digest_checksum|default(None) }}"
     groups:
       - kube-node
 
