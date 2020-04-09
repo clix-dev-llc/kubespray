@@ -6,7 +6,7 @@ say that each component is laid down in a fixed order.
 You can also individually control versions of components by explicitly defining their
 versions. Here are all version vars for each component:
 
-* docker_version
+* docker_version (or containerd_version, etc)
 * kube_version
 * etcd_version
 * calico_version
@@ -277,7 +277,7 @@ As mentioned above, components are upgraded in the order in which they were
 installed in the Ansible playbook. The order of component installation is as
 follows:
 
-* Docker
+* Container Engine (Docker, containerd, etc)
 * etcd
 * kubelet and kube-proxy
 * network_plugin (such as Calico or Weave)
@@ -308,10 +308,10 @@ These commands are useful only for upgrading fully-deployed, healthy, existing
 hosts. This will definitely not work for undeployed or partially deployed
 hosts.
 
-Upgrade docker:
+Upgrade container engine:
 
 ```ShellSession
-ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=docker
+ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=container-engine
 ```
 
 Upgrade etcd:
