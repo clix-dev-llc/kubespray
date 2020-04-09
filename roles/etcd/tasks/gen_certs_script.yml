@@ -5,7 +5,7 @@
     group: "{{ etcd_cert_group }}"
     state: directory
     owner: kube
-    mode: 0700
+    mode: u=rwX,g=rX,o=rX
     recurse: yes
 
 - name: "Gen_certs | create etcd script dir (on {{ groups['etcd'][0] }})"
@@ -25,7 +25,7 @@
     state: directory
     owner: kube
     recurse: yes
-    mode: 0700
+    mode: u=rwX,g=rX,o=rX
   run_once: yes
   when: inventory_hostname == groups['etcd'][0]
   delegate_to: "{{ groups['etcd'][0] }}"
@@ -157,5 +157,5 @@
     group: "{{ etcd_cert_group }}"
     state: directory
     owner: kube
-    mode: 0640
+    mode: u=rwX,g=rX,o=rX
     recurse: yes
