@@ -11,14 +11,14 @@
   delay: 1
   when: inventory_hostname == groups['kube-master'][0]
 
-- name: Kubernetes Apps | Cleanup DNS
-  import_tasks: tasks/cleanup_dns.yml
-  when:
-    - inventory_hostname == groups['kube-master'][0]
-  tags:
-    - upgrade
-    - coredns
-    - nodelocaldns
+# - name: Kubernetes Apps | Cleanup DNS
+#   import_tasks: tasks/cleanup_dns.yml
+#   when:
+#     - inventory_hostname == groups['kube-master'][0]
+#   tags:
+#     - upgrade
+#     - coredns
+#     - nodelocaldns
 
 - name: Kubernetes Apps | CoreDNS
   import_tasks: "tasks/coredns.yml"
