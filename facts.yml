@@ -9,7 +9,7 @@
 
     - name: Gather necessary facts
       setup:
-        gather_subset: '!all,!min,network,hardware'
+        gather_subset: '!all,!min,!virtual,network,hardware'
         filter: "{{ item }}"
       loop:
         - ansible_distribution_major_version
