@@ -18,7 +18,7 @@
     - inventory_hostname in groups['etcd']
 
 - name: Lookup etcd member id
-  shell: "{{ bin_dir }}/etcdctl member list | grep {{ node_ip }} | cut -d: -f1"
+  shell: "{{ bin_dir }}/etcdctl member list | grep {{ node_ip }} | cut -d, -f1"
   register: etcd_member_id
   ignore_errors: true
   changed_when: false
@@ -35,7 +35,7 @@
   when: inventory_hostname in groups['etcd']
 
 - name: Remove etcd member from cluster
-  shell: "{{ bin_dir }}/etcdctl member remove {{ etcd_member_id.stdout }}"
+  command: "{{ bin_dir }}/etcdctl member remove {{ etcd_member_id.stdout }}"
   register: etcd_member_in_cluster
   changed_when: false
   check_mode: no
