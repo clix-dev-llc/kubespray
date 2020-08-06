@@ -105,7 +105,7 @@ vagrant up
 - **Debian** Buster, Jessie, Stretch, Wheezy
 - **Ubuntu** 16.04, 18.04, 20.04
 - **CentOS/RHEL** 7, 8 (experimental: see [centos 8 notes](docs/centos8.md))
-- **Fedora** 30, 31
+- **Fedora** 31, 32
 - **Fedora CoreOS** (experimental: see [fcos Note](docs/fcos.md))
 - **openSUSE** Leap 42.3/Tumbleweed
 - **Oracle Linux** 7, 8 (experimental: [centos 8 notes](docs/centos8.md) apply)
@@ -115,7 +115,7 @@ Note: Upstart/SysV init based OS types are not supported.
 ## Supported Components
 
 - Core
-  - [kubernetes](https://github.com/kubernetes/kubernetes) v1.18.5
+  - [kubernetes](https://github.com/kubernetes/kubernetes) v1.18.6
   - [etcd](https://github.com/coreos/etcd) v3.4.3
   - [docker](https://www.docker.com/) v19.03 (see note)
   - [containerd](https://containerd.io/) v1.2.13
@@ -127,15 +127,16 @@ Note: Upstart/SysV init based OS types are not supported.
   - [cilium](https://github.com/cilium/cilium) v1.8.1
   - [contiv](https://github.com/contiv/install) v1.2.1
   - [flanneld](https://github.com/coreos/flannel) v0.12.0
-  - [kube-ovn](https://github.com/alauda/kube-ovn) v1.2.1
-  - [kube-router](https://github.com/cloudnativelabs/kube-router) v1.0.0
+  - [kube-ovn](https://github.com/alauda/kube-ovn) v1.3.0
+  - [kube-router](https://github.com/cloudnativelabs/kube-router) v1.0.1
   - [multus](https://github.com/intel/multus-cni) v3.6.0
+  - [ovn4nfv](https://github.com/opnfv/ovn4nfv-k8s-plugin) v1.0.0
   - [weave](https://github.com/weaveworks/weave) v2.6.5
 - Application
   - [ambassador](https://github.com/datawire/ambassador): v1.5
   - [cephfs-provisioner](https://github.com/kubernetes-incubator/external-storage) v2.1.0-k8s1.11
   - [rbd-provisioner](https://github.com/kubernetes-incubator/external-storage) v2.1.1-k8s1.11
-  - [cert-manager](https://github.com/jetstack/cert-manager) v0.11.1
+  - [cert-manager](https://github.com/jetstack/cert-manager) v0.15.2
   - [coredns](https://github.com/coredns/coredns) v1.6.7
   - [ingress-nginx](https://github.com/kubernetes/ingress-nginx) v0.32.0
 
@@ -179,6 +180,8 @@ You can choose between 10 network plugins. (default: `calico`, except Vagrant us
 
 - [contiv](docs/contiv.md): supports vlan, vxlan, bgp and Cisco SDN networking. This plugin is able to
     apply firewall policies, segregate containers in multiple network and bridging pods onto physical networks.
+
+- [ovn4nfv](docs/ovn4nfv.md): [ovn4nfv-k8s-plugins](https://github.com/opnfv/ovn4nfv-k8s-plugin) is the network controller, OVS agent and CNI server to offer basic SFC and OVN overlay networking.
 
 - [weave](docs/weave.md): Weave is a lightweight container overlay network that doesn't require an external K/V database cluster.
     (Please refer to `weave` [troubleshooting documentation](https://www.weave.works/docs/net/latest/troubleshooting/)).
