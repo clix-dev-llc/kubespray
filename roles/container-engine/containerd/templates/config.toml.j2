@@ -30,6 +30,11 @@ disabled_plugins = ["restart"]
   conf_dir = "/etc/cni/net.d"
   conf_template = ""
 
+[plugins.cri.containerd.default_runtime]
+  runtime_type = "{{ containerd_default_runtime.type }}"
+  runtime_engine = "{{ containerd_default_runtime.engine }}"
+  runtime_root = "{{ containerd_default_runtime.root }}"
+
 {% if containerd_gvisor is defined %}
 [plugins.cri.containerd]
 snapshotter = "overlayfs"
@@ -46,9 +51,9 @@ snapshotter = "overlayfs"
 {% endif %}
 
 [plugins.cri.containerd.runtimes.runc]
-  runtime_type = "io.containerd.runtime.v1.linux"
-  runtime_engine = "/usr/sbin/runc"
-  runtime_root = "/run/containerd/runc"
+  runtime_type = "{{ containerd_default_runtime.type }}"
+  runtime_engine = "{{ containerd_default_runtime.engine }}"
+  runtime_root = "{{ containerd_default_runtime.root }}"
 
 {% if containerd_kata is defined %}
 [plugins.cri.containerd.runtimes.kata]
