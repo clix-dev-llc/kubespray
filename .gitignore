@@ -98,3 +98,4 @@ target/
 # virtualenv
 venv/
 ENV/
+plugins/
