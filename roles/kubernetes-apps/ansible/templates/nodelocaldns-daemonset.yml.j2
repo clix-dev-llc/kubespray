@@ -79,7 +79,7 @@ spec:
             items:
             - key: Corefile
               path: Corefile
-{% if dns_etchosts | default(None) %}
+{% if nodelocaldns_dns_etchosts | default(None) %}
             - key: hosts
               path: hosts
 {% endif %}

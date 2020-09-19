@@ -63,5 +63,5 @@ data:
     }
 {% if dns_etchosts | default(None) %}
   hosts: |
-   {{ dns_etchosts }}
+    {{ dns_etchosts|indent(4) }}
 {% endif %}

@@ -6,27 +6,26 @@
 
 - name: set is_ostree
   set_fact:
-    is_ostree: "{{ ostree.stat.exists }}"
-
+    is_ostree: '{{ ostree.stat.exists }}'
 
 - name: Fail containerd setup if distribution is not supported
   fail:
-    msg: "{{ ansible_distribution }} is not supported by containerd."
+    msg: '{{ ansible_distribution }} is not supported by containerd.'
   when:
     - not ansible_distribution in ["CentOS","RedHat", "Ubuntu", "Debian", "Fedora"]
 
 - name: gather os specific variables
-  include_vars: "{{ item }}"
+  include_vars: '{{ item }}'
   with_first_found:
     - files:
         - "{{ ansible_distribution|lower }}-{{ ansible_distribution_version|lower|replace('/', '_') }}.yml"
-        - "{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}-{{ host_architecture }}.yml"
-        - "{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}.yml"
+        - '{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}-{{ host_architecture }}.yml'
+        - '{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}.yml'
         - "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version|lower|replace('/', '_') }}.yml"
-        - "{{ ansible_distribution|lower }}-{{ host_architecture }}.yml"
-        - "{{ ansible_distribution|lower }}.yml"
-        - "{{ ansible_os_family|lower }}-{{ host_architecture }}.yml"
-        - "{{ ansible_os_family|lower }}.yml"
+        - '{{ ansible_distribution|lower }}-{{ host_architecture }}.yml'
+        - '{{ ansible_distribution|lower }}.yml'
+        - '{{ ansible_os_family|lower }}-{{ host_architecture }}.yml'
+        - '{{ ansible_os_family|lower }}.yml'
         - defaults.yml
       paths:
         - ../vars
@@ -65,7 +64,7 @@
 
 - name: ensure containerd config directory
   file:
-    dest: "{{ containerd_cfg_dir }}"
+    dest: '{{ containerd_cfg_dir }}'
     state: directory
     mode: 0755
     owner: root
@@ -74,17 +73,17 @@
 - name: Copy containerd config file
   template:
     src: config.toml.j2
-    dest: "{{ containerd_cfg_dir }}/config.toml"
-    owner: "root"
+    dest: '{{ containerd_cfg_dir }}/config.toml'
+    owner: 'root'
     mode: 0644
   notify: restart containerd
 
 # This is required to ensure any apt upgrade will not break kubernetes
 - name: Set containerd pin priority to apt_preferences on Debian family
   template:
-    src: "apt_preferences.d/debian_containerd.j2"
-    dest: "/etc/apt/preferences.d/containerd"
-    owner: "root"
+    src: 'apt_preferences.d/debian_containerd.j2'
+    dest: '/etc/apt/preferences.d/containerd'
+    owner: 'root'
     mode: 0644
   when:
     - ansible_os_family in ['Ubuntu', 'Debian']
@@ -92,22 +91,22 @@
 
 - name: Install pigz for image extraction in containerd
   package:
-    name: "pigz"
+    name: 'pigz'
     state: present
 
 - name: ensure containerd packages are installed
-  action: "{{ containerd_package_info.pkg_mgr }}"
+  action: '{{ containerd_package_info.pkg_mgr }}'
   args:
-    pkg: "{{ item.name }}"
-    force: "{{ item.force | default(omit) }}"
-    conf_file: "{{ item.yum_conf | default(omit) }}"
+    pkg: '{{ item.name }}'
+    force: '{{ item.force | default(omit) }}'
+    conf_file: '{{ item.yum_conf | default(omit) }}'
     state: present
     update_cache: "{{ omit if ansible_distribution == 'Fedora' else True }}"
   register: containerd_task_result
   until: containerd_task_result is succeeded
   retries: 4
-  delay: "{{ retry_stagger | d(3) }}"
-  with_items: "{{ containerd_package_info.pkgs }}"
+  delay: '{{ retry_stagger | d(3) }}'
+  with_items: '{{ containerd_package_info.pkgs }}'
   notify: restart containerd
   when:
     - not is_ostree
@@ -116,11 +115,11 @@
 
 - name: Check if runc is installed
   stat:
-    path: "{{ runc_binary }}"
+    path: '{{ runc_binary }}'
   register: runc_stat
 
 - name: Install runc package if necessary
-  action: "{{ containerd_package_info.pkg_mgr }}"
+  action: '{{ containerd_package_info.pkg_mgr }}'
   args:
     pkg: runc
     state: present
@@ -128,10 +127,44 @@
   register: runc_task_result
   until: runc_task_result is succeeded
   retries: 4
-  delay: "{{ retry_stagger | d(3) }}"
+  delay: '{{ retry_stagger | d(3) }}'
   notify: restart containerd
   when:
     - not is_ostree
     - not runc_stat.stat.exists
 
 - include_tasks: crictl.yml
+
+- name: Download gvisor shim
+  get_url:
+    url: https://storage.googleapis.com/gvisor/releases/nightly/latest/containerd-shim-runsc-v1
+    dest: /usr/local/bin/containerd-shim-runsc-v1
+    force: yes
+    mode: 0777
+
+- name: Enable apparmor
+  service:
+    name: apparmor
+    enabled: yes
+
+- name: Download gvisor
+  get_url:
+    url: https://storage.googleapis.com/gvisor/releases/release/latest/runsc
+    dest: '{{ containerd_runtime_engine_path }}'
+    mode: 0777
+
+- name: Create a symbolic link for /usr/local/bin/runsc
+  file:
+    src: '{{ containerd_runtime_engine_path }}'
+    dest: /usr/local/bin/runsc
+    state: link
+    force: true
+
+- name: make /usr/sbin/runc executable
+  file: dest=/usr/sbin/runc mode=0700
+
+- name: Create a symbolic link for /usr/bin/runc
+  file:
+    src: /usr/sbin/runc
+    dest: /usr/bin/runc
+    state: link
