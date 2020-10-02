@@ -137,20 +137,16 @@
 
 - name: Download gvisor shim
   get_url:
-    url: https://storage.googleapis.com/gvisor/releases/nightly/latest/containerd-shim-runsc-v1
+    url: https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_release }}/containerd-shim-runsc-v1
     dest: /usr/local/bin/containerd-shim-runsc-v1
     force: yes
     mode: 0777
 
-- name: Enable apparmor
-  service:
-    name: apparmor
-    enabled: yes
-
 - name: Download gvisor
   get_url:
-    url: https://storage.googleapis.com/gvisor/releases/release/latest/runsc
+    url: https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_release }}/runsc
     dest: '{{ containerd_runtime_engine_path }}'
+    force: yes
     mode: 0777
 
 - name: Create a symbolic link for /usr/local/bin/runsc
@@ -162,9 +158,16 @@
 
 - name: make /usr/sbin/runc executable
   file: dest=/usr/sbin/runc mode=0700
+  ignore_errors: true
 
 - name: Create a symbolic link for /usr/bin/runc
   file:
     src: /usr/sbin/runc
     dest: /usr/bin/runc
     state: link
+  ignore_errors: true
+
+- name: Enable apparmor
+  service:
+    name: apparmor
+    enabled: yes
