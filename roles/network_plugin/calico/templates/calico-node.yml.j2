@@ -278,13 +278,7 @@ spec:
             initialDelaySeconds: 5
             failureThreshold: 6
           readinessProbe:
-            failureThreshold: {{ calico_node_readiness_probe_failure_threshold }}
-{% if calico_version is version('v3.3.0', '<') %}
-            httpGet:
-              host: 127.0.0.1
-              path: /readiness
-              port: 9099
-{% else %}
+            failureThreshold: 6
             exec:
               command:
               - /bin/calico-node
