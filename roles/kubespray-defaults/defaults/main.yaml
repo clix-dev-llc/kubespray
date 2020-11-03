@@ -29,7 +29,7 @@ kube_proxy_mode: ipvs
 ## List of kubeadm init phases that should be skipped during control plane setup
 ## By default 'addon/coredns' is skipped
 ## 'addon/kube-proxy' gets skipped for some network plugins
-kubeadm_init_phases_skip_default: [ "addon/coredns" ]
+kubeadm_init_phases_skip_default: ["addon/coredns"]
 kubeadm_init_phases_skip: >-
   {%- if kube_network_plugin == 'kube-router' and (kube_router_run_service_proxy is defined and kube_router_run_service_proxy) -%}
   {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
@@ -82,9 +82,9 @@ cluster_name: cluster.local
 ndots: 2
 # Default resolv.conf options
 docker_dns_options:
-- ndots:{{ ndots }}
-- timeout:2
-- attempts:2
+  - ndots:{{ ndots }}
+  - timeout:2
+  - attempts:2
 # Can be coredns, coredns_dual, manual, or none
 dns_mode: coredns
 
@@ -105,8 +105,8 @@ skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('addres
 skydns_server_secondary: "{{ kube_service_addresses|ipaddr('net')|ipaddr(4)|ipaddr('address') }}"
 dns_domain: "{{ cluster_name }}"
 docker_dns_search_domains:
-- 'default.svc.{{ dns_domain }}'
-- 'svc.{{ dns_domain }}'
+  - "default.svc.{{ dns_domain }}"
+  - "svc.{{ dns_domain }}"
 
 kube_dns_servers:
   coredns: ["{{skydns_server}}"]
@@ -373,14 +373,14 @@ external_openstack_lbaas_monitor_timeout: "30s"
 external_openstack_lbaas_monitor_max_retries: "3"
 external_openstack_network_ipv6_disabled: false
 external_openstack_network_internal_networks:
-- ""
+  - ""
 external_openstack_network_public_networks:
-- ""
+  - ""
 
 ## List of authorization modes that must be configured for
 ## the k8s cluster. Only 'AlwaysAllow', 'AlwaysDeny', 'Node' and
 ## 'RBAC' modes are tested. Order is important.
-authorization_modes: ['Node', 'RBAC']
+authorization_modes: ["Node", "RBAC"]
 rbac_enabled: "{{ 'RBAC' in authorization_modes }}"
 
 # When enabled, API bearer tokens (including service account tokens) can be used to authenticate to the kubelet’s HTTPS endpoint
