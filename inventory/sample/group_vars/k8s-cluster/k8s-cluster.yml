@@ -17,7 +17,7 @@ kube_token_dir: "{{ kube_config_dir }}/tokens"
 kube_api_anonymous_auth: true
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.19.2
+kube_version: v1.19.3
 
 # kubernetes image repo define
 kube_image_repo: "k8s.gcr.io"
@@ -64,7 +64,7 @@ credentials_dir: "{{ inventory_dir }}/credentials"
 # kube_webhook_authorization_url: https://...
 # kube_webhook_authorization_url_skip_tls_verify: false
 
-# Choose network plugin (cilium, calico, contiv, weave or flannel. Use cni for generic cni plugin)
+# Choose network plugin (cilium, calico, weave or flannel. Use cni for generic cni plugin)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
 kube_network_plugin: calico
 
@@ -205,8 +205,6 @@ kata_containers_enabled: false
 # containerd_untrusted_runtime_type: ''
 # containerd_untrusted_runtime_engine: ''
 # containerd_untrusted_runtime_root: ''
-
-helm_deployment_type: host
 
 kubeadm_certificate_key: "{{ lookup('password', credentials_dir + '/kubeadm_certificate_key.creds length=64 chars=hexdigits') | lower }}"
 

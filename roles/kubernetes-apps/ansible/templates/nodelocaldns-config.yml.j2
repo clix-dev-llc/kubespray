@@ -19,7 +19,7 @@ data:
         forward . {{ block['nameservers'] | join(' ') }}
         prometheus :9253
         log
-{% if nodelocaldns_dns_etchosts | default(None) %}
+{% if dns_etchosts | default(None) %}
         hosts /etc/coredns/hosts {
           fallthrough
         }
@@ -41,7 +41,7 @@ data:
         }
         prometheus :9253
         health {{ nodelocaldns_ip }}:{{ nodelocaldns_health_port }}
-{% if nodelocaldns_dns_etchosts | default(None) %}
+{% if dns_etchosts | default(None) %}
         hosts /etc/coredns/hosts {
           fallthrough
         }
@@ -75,17 +75,15 @@ data:
         reload
         loop
         bind {{ nodelocaldns_ip }}
-        forward . {{ forwardTarget }} {
-            force_tcp
-        }
+        forward . {{ upstreamForwardTarget }}
         prometheus :9253
-{% if nodelocaldns_dns_etchosts | default(None) %}
+{% if dns_etchosts | default(None) %}
         hosts /etc/coredns/hosts {
           fallthrough
         }
 {% endif %}
     }
-{% if nodelocaldns_dns_etchosts | default(None) %}
+{% if dns_etchosts | default(None) %}
   hosts: |
-    {{ nodelocaldns_dns_etchosts|indent(4) }}
+    {{ dns_etchosts | indent(width=4, indentfirst=None) }}
 {% endif %}
